@@ -7,7 +7,7 @@ void main() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/startPage',
+      initialRoute: '/loginPage',
       routes: {
         '/startPage': (context) => const StartPage(),
         '/loginPage': (context) => const LoginPage(),
