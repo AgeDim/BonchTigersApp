@@ -21,7 +21,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFE4500),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: const Color(0xFFFE4500),
       appBar: null,
       body: Column(
         children: [
@@ -170,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(right: 33),
+                  margin: const EdgeInsets.only(right: 33),
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
