@@ -78,26 +78,17 @@ class _RegisterPageState extends State<RegisterPage> {
                           Text('Пароль', style: StyleLibrary.Text.darkWhite12),
                     ),
                   ),
-                  Stack(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: TextField(
-                          obscureText: _obscureText,
-                        ),
-                      ),
-                      Positioned(
-                        right: 30,
-                        top: 0,
-                        bottom: 0,
-                        child: IconButton(
-                          onPressed: _toggle,
-                          icon: Icon(_obscureText
-                              ? Ionicons.eye_sharp
-                              : Ionicons.eye_off_sharp),
-                        ),
-                      ),
-                    ],
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: TextField(
+                      obscureText: _obscureText,
+                      decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                              onPressed: _toggle,
+                              icon: Icon(_obscureText
+                                  ? Ionicons.eye_sharp
+                                  : Ionicons.eye_off_sharp))),
+                    ),
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
