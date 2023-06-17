@@ -1,3 +1,7 @@
+import 'package:bonch_tigers_app/features/login/login_presenter.dart';
+import 'package:bonch_tigers_app/features/main_page/main_page.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ionicons/ionicons.dart';
@@ -13,10 +17,42 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _obscureText = true;
 
+  late LoginPresenter _presenter;
+  TextEditingController emailTextInputController = TextEditingController();
+  TextEditingController passwordTextInputController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  void navigateToMainPage() {
+    Navigator.pushNamedAndRemoveUntil(
+        context, '/mainPage', (Route<dynamic> route) => false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    _presenter = LoginPresenter(firebaseAuth, navigateToMainPage, context);
+  }
+
+  @override
+  void dispose() {
+    emailTextInputController.dispose();
+    passwordTextInputController.dispose();
+
+    super.dispose();
+  }
+
   void _toggle() {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  Future<void> login() async {
+    final isValid = formKey.currentState!.validate();
+    if (!isValid) return;
+    _presenter.login(
+        emailTextInputController.text, passwordTextInputController.text);
   }
 
   @override
@@ -75,96 +111,111 @@ class _LoginPageState extends State<LoginPage> {
                     topLeft: Radius.circular(50)),
                 color: Colors.white),
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    margin: const EdgeInsets.only(top: 50, left: 30),
-                    child: const Opacity(
-                      opacity: 0.7,
-                      child: Text(
-                        'Почта',
-                        style: TextStyle(
-                            fontFamily: 'Source Sans Pro',
-                            fontSize: 12,
-                            color: Color(0xFFA5A5A5)),
-                      ),
-                    ),
-                  ),
-                  Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: TextField()),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    margin: const EdgeInsets.only(top: 35, left: 30),
-                    child: const Opacity(
-                      opacity: 0.7,
-                      child: Text(
-                        'Пароль',
-                        style: TextStyle(
-                            fontFamily: 'Source Sans Pro',
-                            fontSize: 12,
-                            color: Color(0xFFA5A5A5)),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: TextField(
-                      obscureText: _obscureText,
-                      decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                              onPressed: _toggle,
-                              icon: Icon(_obscureText
-                                  ? Ionicons.eye_sharp
-                                  : Ionicons.eye_off_sharp))),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                        top: 40, left: 30, right: 30, bottom: 18),
-                    child: ElevatedButton(
-                      style: StyleLibrary.Button.orangeButton,
-                      onPressed: _toggle,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                child: Text('ВОЙТИ',
-                                    style: StyleLibrary.Text.white16),
-                              ),
-                            ),
-                          ),
-                          const Column(
-                            children: [
-                              Icon(Ionicons.arrow_forward_sharp),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(right: 33),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/registerPage');
-                        },
-                        child: const Text(
-                          "Нет аккаунта?",
-                          style: TextStyle(color: Color(0xFFFE4500)),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      margin: const EdgeInsets.only(top: 50, left: 30),
+                      child: const Opacity(
+                        opacity: 0.7,
+                        child: Text(
+                          'Почта',
+                          style: TextStyle(
+                              fontFamily: 'Source Sans Pro',
+                              fontSize: 12,
+                              color: Color(0xFFA5A5A5)),
                         ),
                       ),
                     ),
-                  )
-                ],
+                    Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: TextFormField(
+                          keyboardType: TextInputType.emailAddress,
+                          controller: emailTextInputController,
+                          validator: (email) =>
+                              email != null && !EmailValidator.validate(email)
+                                  ? 'Введите правильный Email'
+                                  : null,
+                        )),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      margin: const EdgeInsets.only(top: 35, left: 30),
+                      child: const Opacity(
+                        opacity: 0.7,
+                        child: Text(
+                          'Пароль',
+                          style: TextStyle(
+                              fontFamily: 'Source Sans Pro',
+                              fontSize: 12,
+                              color: Color(0xFFA5A5A5)),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: TextFormField(
+                        controller: passwordTextInputController,
+                        obscureText: _obscureText,
+                        decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                                onPressed: _toggle,
+                                icon: Icon(_obscureText
+                                    ? Ionicons.eye_sharp
+                                    : Ionicons.eye_off_sharp))),
+                        validator: (value) => value != null && value.length < 6
+                            ? 'Минимум 6 символов'
+                            : null,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(
+                          top: 40, left: 30, right: 30, bottom: 18),
+                      child: ElevatedButton(
+                        style: StyleLibrary.Button.orangeButton,
+                        onPressed: _toggle,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 15),
+                                  child: Text('ВОЙТИ',
+                                      style: StyleLibrary.Text.white16),
+                                ),
+                              ),
+                            ),
+                            const Column(
+                              children: [
+                                Icon(Ionicons.arrow_forward_sharp),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(right: 33),
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/registerPage');
+                          },
+                          child: const Text(
+                            "Нет аккаунта?",
+                            style: TextStyle(color: Color(0xFFFE4500)),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ))

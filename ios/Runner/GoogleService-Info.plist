@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>151682514824-rmrq75vrh2093rm924v6ae16os57tt00.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.151682514824-rmrq75vrh2093rm924v6ae16os57tt00</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC2ySKhMdfKgTZI05XmmAMnvGye3l2dHQo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>151682514824</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.bonchTigersApp</string>
+	<key>PROJECT_ID</key>
+	<string>bonchtigersapp</string>
+	<key>STORAGE_BUCKET</key>
+	<string>bonchtigersapp.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:151682514824:ios:aaba18f62eb53af6bb843d</string>
+</dict>
+</plist>

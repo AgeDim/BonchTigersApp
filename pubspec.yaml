@@ -30,6 +30,10 @@ environment:
 dependencies:
   ionicons: ^0.2.2
   flutter_svg: ^1.1.6
+  firebase_auth: ^4.6.3
+  cloud_firestore: ^4.8.1
+  firebase_core: ^2.14.0
+  email_validator: ^2.1.17
   flutter:
     sdk: flutter
 
