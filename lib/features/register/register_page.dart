@@ -49,13 +49,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   Container(
                     alignment: Alignment.centerLeft,
                     margin: const EdgeInsets.only(left: 30, top: 33, bottom: 4),
-                    child: Text('Привет!', style: StyleLibrary.Text.gray34),
+                    child: Text('Привет!', style: StyleLibrary.text.gray34),
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
                     margin: const EdgeInsets.only(left: 30),
                     child: Text('Зарегистрируйтесь',
-                        style: StyleLibrary.Text.lightGray20),
+                        style: StyleLibrary.text.lightGray20),
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
@@ -63,7 +63,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Opacity(
                       opacity: 0.7,
                       child:
-                          Text('Почта', style: StyleLibrary.Text.darkWhite12),
+                          Text('Почта', style: StyleLibrary.text.darkWhite12),
                     ),
                   ),
                   Container(
@@ -75,7 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Opacity(
                       opacity: 0.7,
                       child:
-                          Text('Пароль', style: StyleLibrary.Text.darkWhite12),
+                          Text('Пароль', style: StyleLibrary.text.darkWhite12),
                     ),
                   ),
                   Container(
@@ -93,7 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   Container(
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.only(left: 30, top: 35),
-                    child: Text('Вы:', style: StyleLibrary.Text.darkWhite12),
+                    child: Text('Вы:', style: StyleLibrary.text.darkWhite12),
                   ),
                   Column(
                     children: [
@@ -101,56 +101,25 @@ class _RegisterPageState extends State<RegisterPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 30),
-                              child: TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    role = "БОЛЕЛЬЩИК";
-                                  });
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: role == "БОЛЕЛЬЩИК"
-                                      ? const Color(0xFFFE4500)
-                                      : const Color(0xFFFF7643),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "БОЛЕЛЬЩИК",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
+                            child: RoleContainer(
+                              isSelect: role == 'БОЛЕЛЬЩИК',
+                              onPressed: (){
+                                setState(() {
+                                  role = 'БОЛЕЛЬЩИК';
+                                });
+                              },
+                              role: "БОЛЕЛЬЩИК",
                             ),
                           ),
                           Expanded(
-                            child: Container(
-                              margin: const EdgeInsets.only(right: 30),
-                              child: TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    role = "ТРЕНЕР";
-                                  });
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: role == "ТРЕНЕР"
-                                      ? const Color(0xFFFE4500)
-                                      : const Color(0xFFFF7643),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "ТРЕНЕР",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
+                            child: RoleContainer(
+                              isSelect: role == 'ТРЕНЕР',
+                              onPressed: (){
+                                setState(() {
+                                  role = 'ТРЕНЕР';
+                                });
+                              },
+                              role: "ТРЕНЕР",
                             ),
                           ),
                         ],
@@ -159,55 +128,28 @@ class _RegisterPageState extends State<RegisterPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 30),
-                              child: TextButton(
-                                onPressed: () {
+                            child: RoleContainer(
+                                isSelect: role == 'СПОРТСМЕН',
+                                onPressed: (){
                                   setState(() {
-                                    role = "СПОРТСМЕН";
+                                    role = 'СПОРТСМЕН';
                                   });
                                 },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: role == "СПОРТСМЕН"
-                                      ? const Color(0xFFFE4500)
-                                      : const Color(0xFFFF7643),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "СПОРТСМЕН",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
+                                role: "СПОРТСМЕН",
                             ),
                           ),
                           Expanded(
-                            child: Container(
-                              margin: const EdgeInsets.only(right: 30),
-                              child: TextButton(
-                                onPressed: () {
+                            // Если внутри данные слишком большие, то контейнер расширяется вниз
+                            // FittedBox поможет сжать контент. Надеюсь ничего не сломал из-за этого
+                            child: FittedBox(
+                              child: RoleContainer(
+                                isSelect: role == 'ОРГАНИЗАТОР',
+                                onPressed: (){
                                   setState(() {
-                                    role = "ОРГАНИЗАТОР";
+                                    role = 'ОРГАНИЗАТОР';
                                   });
                                 },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: role == "ОРГАНИЗАТОР"
-                                      ? const Color(0xFFFE4500)
-                                      : const Color(0xFFFF7643),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "ОРГАНИЗАТОР",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                role: "ОРГАНИЗАТОР",
                               ),
                             ),
                           ),
@@ -219,7 +161,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     margin: const EdgeInsets.only(
                         top: 40, left: 30, right: 30, bottom: 18),
                     child: ElevatedButton(
-                      style: StyleLibrary.Button.orangeButton,
+                      style: StyleLibrary.button.orangeButton,
                       onPressed: _toggle,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -231,7 +173,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 15),
                                 child: Text('РЕГИСТРАЦИЯ',
-                                    style: StyleLibrary.Text.white16),
+                                    style: StyleLibrary.text.white16),
                               ),
                             ),
                           ),
@@ -253,3 +195,43 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
+
+
+//Заменил дубликаты на такой виджет, должно стать лаконичнее
+class RoleContainer extends StatelessWidget {
+  const RoleContainer({Key? key,
+    required this.isSelect,
+    required this.onPressed,
+    required this.role,
+  }) : super(key: key);
+
+  final bool isSelect;
+  final Function() onPressed;
+  final String role;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin:
+      const EdgeInsets.symmetric(horizontal: 30),
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          backgroundColor: (isSelect)
+              ? const Color(0xFFFE4500)
+              : const Color(0xFFFF7643),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        child:  Text(
+          role,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
