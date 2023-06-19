@@ -33,6 +33,7 @@ dependencies:
   firebase_auth: ^4.6.3
   cloud_firestore: ^4.8.1
   firebase_core: ^2.14.0
+  # todo: Использовать отдельные пакеты для маленькой функциональности - плохая идея
   email_validator: ^2.1.17
   flutter:
     sdk: flutter
