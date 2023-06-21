@@ -1,6 +1,9 @@
 import 'package:bonch_tigers_app/features/calendar/calendar_page.dart';
+import 'package:bonch_tigers_app/features/main_page/main_presenter.dart';
 import 'package:bonch_tigers_app/features/profile/profile_page.dart';
 import 'package:bonch_tigers_app/features/stats/stats_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -13,6 +16,24 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int currentPageIndex = 0;
+  late MainPresenter _presenter;
+  String? role;
+
+  Future<void> getCurrentUserRole() async {
+    final userRole = await _presenter.getCurrentUserRole();
+    setState(() {
+      role = userRole;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    DatabaseReference userRef = FirebaseDatabase.instance.reference();
+    _presenter = MainPresenter(firebaseAuth, userRef);
+    getCurrentUserRole();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +88,9 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
       body: <Widget>[
-        const CalendarPage(),
+        CalendarPage(
+          role: role,
+        ),
         const StatsPage(),
         const ProfilePage()
       ][currentPageIndex],

@@ -1,8 +1,25 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class StartPage extends StatelessWidget {
-  const StartPage({super.key});
+class StartPage extends StatefulWidget {
+  final String nextRoute;
+
+  StartPage({super.key, this.nextRoute = '/loginPage'});
+
+  @override
+  State<StatefulWidget> createState() => _StartPageState();
+}
+
+class _StartPageState extends State<StartPage> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 2), () {
+      Navigator.of(context).pushReplacementNamed(widget.nextRoute);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

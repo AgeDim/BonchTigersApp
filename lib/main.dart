@@ -1,10 +1,11 @@
 import 'package:bonch_tigers_app/features/login/login_page.dart';
 import 'package:bonch_tigers_app/features/main_page/main_page.dart';
 import 'package:bonch_tigers_app/features/register/register_page.dart';
-import 'package:bonch_tigers_app/features/start/register_page.dart';
+import 'package:bonch_tigers_app/features/start/start_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,10 +20,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     return MaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      locale: const Locale('ru', 'RU'),
       debugShowCheckedModeBanner: false,
-      initialRoute: user == null ? '/loginPage' : '/mainPage',
+      initialRoute: '/startPage',
       routes: {
-        '/startPage': (context) => const StartPage(),
+        '/startPage': (context) =>
+            StartPage(nextRoute: user == null ? '/loginPage' : '/mainPage'),
         '/loginPage': (context) => const LoginPage(),
         '/registerPage': (context) => const RegisterPage(),
         '/mainPage': (context) => const MainPage(),

@@ -18,4 +18,10 @@ class FontStyle {
     fontSize: 16,
     color: Colors.white,
   );
+  TextStyle text16 =
+      const TextStyle(fontFamily: 'Source Sans Pro', fontSize: 12);
+  TextStyle black16 =
+      const TextStyle(fontFamily: 'Source Sans Pro', fontSize: 16);
+  TextStyle white20 = const TextStyle(
+      fontFamily: 'Source Sans Pro', fontSize: 20, color: Colors.white);
 }

@@ -10,7 +10,8 @@ class RegisterPresenter {
   final BuildContext context;
   final DatabaseReference userRef;
 
-  RegisterPresenter(this._firebaseAuth, this.userRef ,this.onRegisterSuccess, this.context);
+  RegisterPresenter(
+      this._firebaseAuth, this.userRef, this.onRegisterSuccess, this.context);
 
   Future<void> register(String email, String password, String role) async {
     try {
@@ -18,9 +19,7 @@ class RegisterPresenter {
           .createUserWithEmailAndPassword(email: email, password: password);
       User? user = credential.user;
       if (user != null) {
-        userRef.child(user.uid).set({
-          'role': role,
-        });
+        userRef.child(user.uid).child('role').set(role);
         onRegisterSuccess();
       }
     } on FirebaseAuthException catch (e) {
