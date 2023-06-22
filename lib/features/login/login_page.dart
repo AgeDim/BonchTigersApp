@@ -140,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                                 } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(value)) {
                                   return 'Пожалуйста введите корректную почту';
                                 }
-                                return null; // Return null if the email is valid
+                                return null;
                               },
                             )),
                         Container(

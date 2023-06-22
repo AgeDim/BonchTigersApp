@@ -28,6 +28,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
         });
         widget.onDateSelected(value);
       },
+      menuMaxHeight: 400,
       isExpanded: true,
       icon: const Icon(Ionicons.chevron_down),
       items:

@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pixel_snap/pixel_snap.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 
-import 'event_form_page.dart';
+import '../event_from_page/event_form_page.dart';
 
 class CalendarPage extends StatefulWidget {
   String? role;
@@ -110,8 +111,10 @@ class _CalendarPageState extends State<CalendarPage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const EventFormPage(),
+                                          builder: (context) => EventFormPage(
+                                              selectedDay:
+                                                  DateFormat('dd.MM.yy')
+                                                      .format(selectedDay)),
                                         ),
                                       );
                                     }

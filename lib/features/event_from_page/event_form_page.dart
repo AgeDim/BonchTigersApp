@@ -1,61 +1,129 @@
+import 'package:bonch_tigers_app/features/event_from_page/event_form_presenter.dart';
 import 'package:bonch_tigers_app/styles/style_library.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pixel_snap/pixel_snap.dart';
-import 'package:intl/intl.dart';
+import '../../services/snack_bar.dart';
 import '../widgets/drop_down_menu.dart';
+import 'package:intl/intl.dart';
 
 class EventFormPage extends StatefulWidget {
-  const EventFormPage({super.key});
+  const EventFormPage({super.key, required this.selectedDay});
+
+  final String selectedDay;
 
   @override
   State<EventFormPage> createState() => _EventFormPageState();
 }
 
 class _EventFormPageState extends State<EventFormPage> {
-  TextEditingController timeEdittingController = TextEditingController();
-  TextEditingController enemyEdittingController = TextEditingController();
-  TextEditingController placeEdittingController = TextEditingController();
+  TextEditingController timeInputController = TextEditingController();
+  TextEditingController enemyInputController = TextEditingController();
+  TextEditingController placeInputController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  late EventFormPresenter _presenter;
 
-  List<String> getDatesUntilEndOfMonthAndNextTenDays() {
-    final now = DateTime.now();
-    final lastDayOfMonth = DateTime(now.year, now.month + 1, 0).day;
-    final dateFormat = DateFormat('dd.MM.yy');
-
-    List<String> dates = [];
-
-    for (int i = now.day; i <= lastDayOfMonth; i++) {
-      final date = DateTime(now.year, now.month, i);
-      dates.add(dateFormat.format(date));
-    }
-
-    final nextMonth = now.month + 1;
-    final nextMonthYear = now.year + (nextMonth > 12 ? 1 : 0);
-    final nextMonthLastDay = DateTime(nextMonthYear, nextMonth + 1, 0).day;
-    for (int i = 1; i <= 10; i++) {
-      if (i <= nextMonthLastDay) {
-        final date = DateTime(nextMonthYear, nextMonth, i);
-        dates.add(dateFormat.format(date));
-      } else {
-        final date =
-            DateTime(nextMonthYear, nextMonth + 1, i - nextMonthLastDay);
-        dates.add(dateFormat.format(date));
-      }
-    }
-
-    return dates;
+  @override
+  void initState() {
+    super.initState();
+    selectedDate = widget.selectedDay;
+    selectedSport = sports.first;
+    DatabaseReference eventRef =
+        FirebaseDatabase.instance.reference().child('events');
+    _presenter = EventFormPresenter(eventRef, onAdded, onUpdate, context);
   }
 
-  String? selectedValue;
+  @override
+  void dispose() {
+    timeInputController.dispose();
+    enemyInputController.dispose();
+    placeInputController.dispose();
 
-  void handleDateSelected(String? value) {
+    super.dispose();
+  }
+
+  final List<String> sports = [
+    'баскетбол',
+    'волейбол',
+    'футбол',
+    'настольный теннис',
+    'гандбол',
+    'гребля',
+    'плавание'
+  ];
+
+  List<String> getDaysAfterSelectedDay(String selectedDay) {
+    DateFormat dateFormat = DateFormat('dd.MM.yy');
+    DateTime selectedDateTime = dateFormat.parse(selectedDay);
+    DateTime lastDayOfMonth =
+        DateTime(selectedDateTime.year, selectedDateTime.month + 1, 0);
+
+    List<String> daysAfterSelected = [];
+    for (int i = selectedDateTime.day; i <= lastDayOfMonth.day; i++) {
+      DateTime day = DateTime(selectedDateTime.year, selectedDateTime.month, i);
+      String formattedDay =
+          '${day.day.toString().padLeft(2, '0')}.${day.month.toString().padLeft(2, '0')}.${day.year.toString().substring(2)}';
+      daysAfterSelected.add(formattedDay);
+    }
+
+    return daysAfterSelected;
+  }
+
+  String? selectedDate;
+  String? selectedSport;
+
+  void handleSportSelected(String? value) {
     setState(() {
-      selectedValue = value;
+      selectedSport = value;
     });
   }
 
-  void submit() {}
+  void onAdded() {
+    SnackBarService.showSnackBar(
+      context,
+      'Event added successfully!',
+      true,
+    );
+  }
+
+  void onUpdate() {
+    SnackBarService.showSnackBar(
+      context,
+      'Event update successfully!',
+      true,
+    );
+  }
+
+  void handleDateSelected(String? value) {
+    setState(() {
+      selectedDate = value;
+    });
+  }
+
+  Future<void> submit() async {
+    if (formKey.currentState!.validate()) {
+      if (selectedDate == null ||
+          selectedSport == null ||
+          timeInputController.text.isEmpty ||
+          enemyInputController.text.isEmpty ||
+          placeInputController.text.isEmpty) {
+        SnackBarService.showSnackBar(
+          context,
+          'Please select a date and sport',
+          true,
+        );
+        return;
+      } else {
+        _presenter.addEvent(
+            selectedDate.toString(),
+            selectedSport.toString(),
+            timeInputController.text.trim(),
+            enemyInputController.text.trim(),
+            placeInputController.text.trim());
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +183,7 @@ class _EventFormPageState extends State<EventFormPage> {
                             margin: EdgeInsets.only(bottom: 25.pixelSnap(ps)),
                             child: CustomDropDownMenu(
                               arrayOfElements:
-                                  getDatesUntilEndOfMonthAndNextTenDays(),
+                                  getDaysAfterSelectedDay(widget.selectedDay),
                               onDateSelected: handleDateSelected,
                             ),
                           ),
@@ -126,9 +194,8 @@ class _EventFormPageState extends State<EventFormPage> {
                           Container(
                             margin: EdgeInsets.only(bottom: 25.pixelSnap(ps)),
                             child: CustomDropDownMenu(
-                              arrayOfElements:
-                                  getDatesUntilEndOfMonthAndNextTenDays(),
-                              onDateSelected: handleDateSelected,
+                              arrayOfElements: sports,
+                              onDateSelected: handleSportSelected,
                             ),
                           ),
                           Text(
@@ -138,7 +205,20 @@ class _EventFormPageState extends State<EventFormPage> {
                           Container(
                             margin: EdgeInsets.only(bottom: 25.pixelSnap(ps)),
                             child: TextFormField(
-                              controller: timeEdittingController,
+                              controller: timeInputController,
+                              keyboardType: TextInputType.datetime,
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'Пожалуйста введите время';
+                                } else if (!RegExp(
+                                        r'^([01]\d|2[0-3]):([0-5]\d)$')
+                                    .hasMatch(value)) {
+                                  return 'Пожалуйста введите корректное время';
+                                }
+                                return null;
+                              },
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                             ),
                           ),
                           Text(
@@ -148,7 +228,7 @@ class _EventFormPageState extends State<EventFormPage> {
                           Container(
                             margin: EdgeInsets.only(bottom: 25.pixelSnap(ps)),
                             child: TextFormField(
-                              controller: enemyEdittingController,
+                              controller: enemyInputController,
                             ),
                           ),
                           Text(
@@ -158,7 +238,7 @@ class _EventFormPageState extends State<EventFormPage> {
                           Container(
                             margin: EdgeInsets.only(bottom: 76.pixelSnap(ps)),
                             child: TextFormField(
-                              controller: placeEdittingController,
+                              controller: placeInputController,
                             ),
                           ),
                           ElevatedButton(
