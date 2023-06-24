@@ -23,7 +23,7 @@ class Event {
     };
   }
 
-  factory Event.fromJson(String id, Map<String, dynamic> json) {
+  factory Event.fromJson(String id, Map<dynamic, dynamic> json) {
     return Event(
       id: id,
       date: json['date'],

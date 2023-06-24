@@ -15,8 +15,6 @@ class EventFormPresenter {
 
   Future<void> addEvent(String date, String sport, String time, String enemy,
       String place) async {
-    print(date);
-    print(sport);
     try {
       DatabaseEvent event =
           await eventsRef.orderByChild('date').equalTo(date).once();
