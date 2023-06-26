@@ -6,6 +6,21 @@ class FontStyle {
     fontSize: 34,
     color: Color(0xFF3A3A3A),
   );
+  TextStyle gray16 = const TextStyle(
+    fontFamily: 'Source Sans Pro',
+    fontSize: 16,
+    color: Color(0xFF3A3A3A),
+  );
+  TextStyle orange14 = const TextStyle(
+    fontFamily: 'Source Sans Pro',
+    fontSize: 14,
+    color: Color(0xFFFF4601),
+  );
+  TextStyle gray14 = const TextStyle(
+    fontFamily: 'Source Sans Pro',
+    fontSize: 14,
+    color: Color(0xFF777777),
+  );
   TextStyle lightGray20 = const TextStyle(
     fontFamily: 'Source Sans Pro',
     fontSize: 20,
@@ -18,8 +33,10 @@ class FontStyle {
     fontSize: 16,
     color: Colors.white,
   );
-  TextStyle text16 =
+  TextStyle text12 =
       const TextStyle(fontFamily: 'Source Sans Pro', fontSize: 12);
+  TextStyle text16 =
+      const TextStyle(fontFamily: 'Source Sans Pro', fontSize: 16);
   TextStyle black16 =
       const TextStyle(fontFamily: 'Source Sans Pro', fontSize: 16);
   TextStyle white20 = const TextStyle(
