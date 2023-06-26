@@ -44,7 +44,11 @@ class _CalendarPageState extends State<CalendarPage> {
     _presenter = CalendarPresenter(eventRef, context);
     _fetchEvents(_selectedMonth);
   }
-
+  void addEvent(Event event){
+    setState(() {
+      _events.add(event);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final ps = PixelSnap.of(context);
@@ -152,7 +156,11 @@ class _CalendarPageState extends State<CalendarPage> {
                                     onDaySelected: (selectedDay, focusedDay) {
                                       if (widget.role == "ТРЕНЕР") {
                                         setState(() {
-                                          _selectedDay = selectedDay;
+                                          if (_selectedDay == selectedDay) {
+                                            _selectedDay = null;
+                                          } else {
+                                            _selectedDay = selectedDay;
+                                          }
                                         });
                                       }
                                     },
@@ -252,27 +260,144 @@ class _CalendarPageState extends State<CalendarPage> {
                                           ),
                                           Container(
                                             padding: EdgeInsets.symmetric(
-                                                vertical: 10.pixelSnap(ps)),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                                vertical: 5.pixelSnap(ps)),
+                                            child: Column(
                                               children: [
-                                                Text(
-                                                  DateFormat('dd MMMM HH:mm',
-                                                          'ru_RU')
-                                                      .format(DateFormat(
-                                                              'dd.MM.yy HH:mm')
-                                                          .parse(
-                                                              '${_events[index].date} ${_events[index].time}')),
-                                                  style:
-                                                      StyleLibrary.text.gray14,
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      DateFormat(
+                                                              'dd MMMM HH:mm',
+                                                              'ru_RU')
+                                                          .format(DateFormat(
+                                                                  'dd.MM.yy HH:mm')
+                                                              .parse(
+                                                                  '${_events[index].date} ${_events[index].time}')),
+                                                      style: StyleLibrary
+                                                          .text.gray14,
+                                                    ),
+                                                    Text(
+                                                      _events[index].place,
+                                                      style: StyleLibrary
+                                                          .text.gray14,
+                                                    ),
+                                                  ],
                                                 ),
-                                                Text(
-                                                  _events[index].place,
-                                                  style:
-                                                      StyleLibrary.text.gray14,
-                                                )
+                                                if (_selectedDay != null)
+                                                  if (_events[index].date ==
+                                                      DateFormat('dd.MM.yy')
+                                                          .format(
+                                                              _selectedDay!))
+                                                    Container(
+                                                      padding: EdgeInsets.only(
+                                                          top: 5.pixelSnap(ps)),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          ElevatedButton(
+                                                            style: StyleLibrary
+                                                                .button
+                                                                .orangeButton,
+                                                            onPressed: () {},
+                                                            child: SizedBox(
+                                                              width: 110
+                                                                  .pixelSnap(
+                                                                      ps),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  const Column(
+                                                                    children: [
+                                                                      Icon(
+                                                                        Ionicons
+                                                                            .pencil_sharp,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Expanded(
+                                                                    child:
+                                                                        Align(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
+                                                                      child: Text(
+                                                                          'ИЗМЕНИТЬ',
+                                                                          style: StyleLibrary
+                                                                              .text
+                                                                              .white16),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          ElevatedButton(
+                                                            style: StyleLibrary
+                                                                .button
+                                                                .orangeButton,
+                                                            onPressed:
+                                                                () async {
+                                                              bool isDelete =
+                                                                  await _presenter
+                                                                      .deleteEvent(
+                                                                          _events[index]
+                                                                              .id);
+                                                              if (isDelete) {
+                                                                setState(() {
+                                                                  _events
+                                                                      .removeAt(
+                                                                          index);
+                                                                });
+                                                              }
+                                                            },
+                                                            child: SizedBox(
+                                                              width: 110
+                                                                  .pixelSnap(
+                                                                      ps),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  const Column(
+                                                                    children: [
+                                                                      Icon(
+                                                                        Ionicons
+                                                                            .trash_outline,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Expanded(
+                                                                    child:
+                                                                        Align(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
+                                                                      child: Text(
+                                                                          'УДАЛИТЬ',
+                                                                          style: StyleLibrary
+                                                                              .text
+                                                                              .white16),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
                                               ],
                                             ),
                                           )
@@ -294,7 +419,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                           builder: (context) => EventFormPage(
                                               selectedDay:
                                                   DateFormat('dd.MM.yy')
-                                                      .format(_selectedDay!)),
+                                                      .format(_selectedDay!), addFunc: addEvent),
                                         ),
                                       );
                                     },

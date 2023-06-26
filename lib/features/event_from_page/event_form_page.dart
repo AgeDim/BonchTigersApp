@@ -1,4 +1,5 @@
 import 'package:bonch_tigers_app/features/event_from_page/event_form_presenter.dart';
+import 'package:bonch_tigers_app/model/event.dart';
 import 'package:bonch_tigers_app/styles/style_library.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,11 @@ import '../widgets/drop_down_menu.dart';
 import 'package:intl/intl.dart';
 
 class EventFormPage extends StatefulWidget {
-  const EventFormPage({super.key, required this.selectedDay});
+  const EventFormPage(
+      {super.key, required this.selectedDay, required this.addFunc});
 
   final String selectedDay;
+  final Function(Event event) addFunc;
 
   @override
   State<EventFormPage> createState() => _EventFormPageState();
@@ -31,7 +34,8 @@ class _EventFormPageState extends State<EventFormPage> {
     selectedSport = sports.first;
     DatabaseReference eventRef =
         FirebaseDatabase.instance.reference().child('events');
-    _presenter = EventFormPresenter(eventRef, onAdded, onUpdate, context);
+    _presenter = EventFormPresenter(
+        eventRef, onAdded, onUpdate, widget.addFunc, context);
   }
 
   @override
@@ -44,13 +48,13 @@ class _EventFormPageState extends State<EventFormPage> {
   }
 
   final List<String> sports = [
-    'баскетбол',
-    'волейбол',
-    'футбол',
-    'настольный теннис',
-    'гандбол',
-    'гребля',
-    'плавание'
+    'Баскетбол',
+    'Волейбол',
+    'Футбол',
+    'Настольный теннис',
+    'Гандбол',
+    'Гребля',
+    'Плавание'
   ];
 
   List<String> getDaysAfterSelectedDay(String selectedDay) {
@@ -121,6 +125,7 @@ class _EventFormPageState extends State<EventFormPage> {
             timeInputController.text.trim(),
             enemyInputController.text.trim(),
             placeInputController.text.trim());
+        Navigator.pop(context);
       }
     }
   }

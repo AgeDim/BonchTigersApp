@@ -65,199 +65,198 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFFE4500),
       appBar: null,
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: [
-              SafeArea(
-                  child: Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.only(bottom: 30, top: 18),
-                child: SvgPicture.asset(
-                  'assets/images/CircuitTigerFull.svg',
-                ),
-              )),
-              Expanded(
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SafeArea(
                 child: Container(
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(50),
-                          topLeft: Radius.circular(50)),
-                      color: Colors.white),
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(
-                              left: 30, top: 33, bottom: 4),
-                          child:
-                              Text('Привет!', style: StyleLibrary.text.gray34),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.only(bottom: 30, top: 18),
+              child: SvgPicture.asset(
+                'assets/images/CircuitTigerFull.svg',
+              ),
+            )),
+          ),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Container(
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(50),
+                      topLeft: Radius.circular(50)),
+                  color: Colors.white),
+              child: Form(
+                key: formKey,
+                child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin:
+                            const EdgeInsets.only(left: 30, top: 33, bottom: 4),
+                        child: Text('Привет!', style: StyleLibrary.text.gray34),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: const EdgeInsets.only(left: 30),
+                        child: Text('Зарегистрируйтесь',
+                            style: StyleLibrary.text.lightGray20),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: const EdgeInsets.only(top: 41, left: 30),
+                        child: Opacity(
+                          opacity: 0.7,
+                          child: Text('Почта',
+                              style: StyleLibrary.text.darkWhite12),
                         ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: 30),
-                          child: Text('Зарегистрируйтесь',
-                              style: StyleLibrary.text.lightGray20),
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(top: 41, left: 30),
-                          child: Opacity(
-                            opacity: 0.7,
-                            child: Text('Почта',
-                                style: StyleLibrary.text.darkWhite12),
-                          ),
-                        ),
-                        Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 30),
-                            child: TextFormField(
-                              keyboardType: TextInputType.emailAddress,
-                              controller: emailTextInputController,
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'Пожалуйста введите почту';
-                                } else if (!RegExp(
-                                        r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
-                                    .hasMatch(value)) {
-                                  return 'Пожалуйста введите корректную почту';
-                                }
-                                return null; // Return null if the email is valid
-                              },
-                            )),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(top: 35, left: 30),
-                          child: Opacity(
-                            opacity: 0.7,
-                            child: Text('Пароль',
-                                style: StyleLibrary.text.darkWhite12),
-                          ),
-                        ),
-                        Container(
+                      ),
+                      Container(
                           padding: const EdgeInsets.symmetric(horizontal: 30),
                           child: TextFormField(
-                            controller: passwordTextInputController,
-                            obscureText: _obscureText,
-                            decoration: InputDecoration(
-                                suffixIcon: IconButton(
-                                    onPressed: _toggle,
-                                    icon: Icon(_obscureText
-                                        ? Ionicons.eye_sharp
-                                        : Ionicons.eye_off_sharp))),
-                            validator: (value) =>
-                                value != null && value.length < 6
-                                    ? 'Минимум 6 символов'
-                                    : null,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                            keyboardType: TextInputType.emailAddress,
+                            controller: emailTextInputController,
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Пожалуйста введите почту';
+                              } else if (!RegExp(
+                                      r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+                                  .hasMatch(value)) {
+                                return 'Пожалуйста введите корректную почту';
+                              }
+                              return null; // Return null if the email is valid
+                            },
+                          )),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: const EdgeInsets.only(top: 25, left: 30),
+                        child: Opacity(
+                          opacity: 0.7,
+                          child: Text('Пароль',
+                              style: StyleLibrary.text.darkWhite12),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: TextFormField(
+                          controller: passwordTextInputController,
+                          obscureText: _obscureText,
+                          decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                  onPressed: _toggle,
+                                  icon: Icon(_obscureText
+                                      ? Ionicons.eye_sharp
+                                      : Ionicons.eye_off_sharp))),
+                          validator: (value) =>
+                              value != null && value.length < 6
+                                  ? 'Минимум 6 символов'
+                                  : null,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.only(left: 30, top: 35),
+                        child:
+                            Text('Вы:', style: StyleLibrary.text.darkWhite12),
+                      ),
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: RoleContainer(
+                                  isSelect: role == 'БОЛЕЛЬЩИК',
+                                  onPressed: () {
+                                    setState(() {
+                                      role = 'БОЛЕЛЬЩИК';
+                                    });
+                                  },
+                                  role: "БОЛЕЛЬЩИК",
+                                ),
+                              ),
+                              Expanded(
+                                child: RoleContainer(
+                                  isSelect: role == 'ТРЕНЕР',
+                                  onPressed: () {
+                                    setState(() {
+                                      role = 'ТРЕНЕР';
+                                    });
+                                  },
+                                  role: "ТРЕНЕР",
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: RoleContainer(
+                                  isSelect: role == 'СПОРТСМЕН',
+                                  onPressed: () {
+                                    setState(() {
+                                      role = 'СПОРТСМЕН';
+                                    });
+                                  },
+                                  role: "СПОРТСМЕН",
+                                ),
+                              ),
+                              Expanded(
+                                child: FittedBox(
+                                  child: RoleContainer(
+                                    isSelect: role == 'ОРГАНИЗАТОР',
+                                    onPressed: () {
+                                      setState(() {
+                                        role = 'ОРГАНИЗАТОР';
+                                      });
+                                    },
+                                    role: "ОРГАНИЗАТОР",
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(
+                            top: 40, left: 30, right: 30, bottom: 18),
+                        child: ElevatedButton(
+                          style: StyleLibrary.button.orangeButton,
+                          onPressed: register,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 15),
+                                    child: Text('РЕГИСТРАЦИЯ',
+                                        style: StyleLibrary.text.white16),
+                                  ),
+                                ),
+                              ),
+                              const Column(
+                                children: [
+                                  Icon(Ionicons.arrow_forward_sharp),
+                                ],
+                              )
+                            ],
                           ),
                         ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(left: 30, top: 35),
-                          child:
-                              Text('Вы:', style: StyleLibrary.text.darkWhite12),
-                        ),
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: RoleContainer(
-                                    isSelect: role == 'БОЛЕЛЬЩИК',
-                                    onPressed: () {
-                                      setState(() {
-                                        role = 'БОЛЕЛЬЩИК';
-                                      });
-                                    },
-                                    role: "БОЛЕЛЬЩИК",
-                                  ),
-                                ),
-                                Expanded(
-                                  child: RoleContainer(
-                                    isSelect: role == 'ТРЕНЕР',
-                                    onPressed: () {
-                                      setState(() {
-                                        role = 'ТРЕНЕР';
-                                      });
-                                    },
-                                    role: "ТРЕНЕР",
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: RoleContainer(
-                                    isSelect: role == 'СПОРТСМЕН',
-                                    onPressed: () {
-                                      setState(() {
-                                        role = 'СПОРТСМЕН';
-                                      });
-                                    },
-                                    role: "СПОРТСМЕН",
-                                  ),
-                                ),
-                                Expanded(
-                                  child: FittedBox(
-                                    child: RoleContainer(
-                                      isSelect: role == 'ОРГАНИЗАТОР',
-                                      onPressed: () {
-                                        setState(() {
-                                          role = 'ОРГАНИЗАТОР';
-                                        });
-                                      },
-                                      role: "ОРГАНИЗАТОР",
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(
-                              top: 40, left: 30, right: 30, bottom: 18),
-                          child: ElevatedButton(
-                            style: StyleLibrary.button.orangeButton,
-                            onPressed: register,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 15),
-                                      child: Text('РЕГИСТРАЦИЯ',
-                                          style: StyleLibrary.text.white16),
-                                    ),
-                                  ),
-                                ),
-                                const Column(
-                                  children: [
-                                    Icon(Ionicons.arrow_forward_sharp),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

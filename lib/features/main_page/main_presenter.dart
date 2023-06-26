@@ -1,6 +1,6 @@
+import 'package:bonch_tigers_app/services/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 
 class MainPresenter {
   final FirebaseAuth _auth;
@@ -18,7 +18,7 @@ class MainPresenter {
         return role;
       }
     } catch (error) {
-      print('Error retrieving user role: $error');
+      CustomLogger.error('Error retrieving user role: $error');
     }
     return null;
   }

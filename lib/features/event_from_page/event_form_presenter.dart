@@ -9,9 +9,10 @@ class EventFormPresenter {
   final DatabaseReference eventsRef;
   final Function() onAddedSuccessfully;
   final Function() onUpdateSuccessfully;
+  final Function(Event event) addFunc;
 
   EventFormPresenter(this.eventsRef, this.onAddedSuccessfully,
-      this.onUpdateSuccessfully, this.context);
+      this.onUpdateSuccessfully, this.addFunc, this.context);
 
   Future<void> addEvent(String date, String sport, String time, String enemy,
       String place) async {
@@ -46,6 +47,7 @@ class EventFormPresenter {
           place: place,
         );
         await newEventRef.set(newEvent.toJson());
+        addFunc(newEvent);
         onAddedSuccessfully();
       }
     } catch (error) {
@@ -54,7 +56,6 @@ class EventFormPresenter {
         'Error adding/updating event: $error',
         true,
       );
-      print(error);
       return;
     }
   }

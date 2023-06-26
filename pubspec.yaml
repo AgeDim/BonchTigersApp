@@ -38,6 +38,8 @@ dependencies:
   pixel_snap: ^0.1.1
 
   table_calendar: ^3.0.9
+
+  logger: ^1.4.0
   flutter:
     sdk: flutter
   flutter_localizations:

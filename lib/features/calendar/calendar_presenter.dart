@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../model/event.dart';
+import '../../services/logger.dart';
+import '../../services/snack_bar.dart';
 
 class CalendarPresenter {
   final BuildContext context;
@@ -36,5 +38,21 @@ class CalendarPresenter {
     }).toList();
 
     return events;
+  }
+
+  Future<bool> deleteEvent(String? eventId) async {
+    try {
+      DatabaseReference eventRef = FirebaseDatabase.instance.reference().child('events');
+      await eventRef.child(eventId!).remove();
+      SnackBarService.showSnackBar(
+        context,
+        'Event deleted successfully',
+        true,
+      );
+      return true;
+    } catch (error) {
+      CustomLogger.error('Error deleting event: $error');
+      return false;
+    }
   }
 }
