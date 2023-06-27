@@ -1,4 +1,5 @@
 import 'package:bonch_tigers_app/features/calendar/calendar_presenter.dart';
+import 'package:bonch_tigers_app/services/logger.dart';
 import 'package:bonch_tigers_app/styles/style_library.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -44,11 +45,20 @@ class _CalendarPageState extends State<CalendarPage> {
     _presenter = CalendarPresenter(eventRef, context);
     _fetchEvents(_selectedMonth);
   }
-  void addEvent(Event event){
+
+  void addEvent(Event event) {
     setState(() {
       _events.add(event);
     });
   }
+
+  String convertDateToRussian(String date) {
+    final parsedDate = DateFormat('dd.MM.yy').parse(date);
+    final formattedDate = DateFormat('dd MMMM', 'ru_RU').format(parsedDate);
+    final monthName = formattedDate.split(' ')[1];
+    return '${formattedDate.split(' ')[0]} $monthName';
+  }
+
   @override
   Widget build(BuildContext context) {
     final ps = PixelSnap.of(context);
@@ -419,7 +429,8 @@ class _CalendarPageState extends State<CalendarPage> {
                                           builder: (context) => EventFormPage(
                                               selectedDay:
                                                   DateFormat('dd.MM.yy')
-                                                      .format(_selectedDay!), addFunc: addEvent),
+                                                      .format(_selectedDay!),
+                                              addFunc: addEvent),
                                         ),
                                       );
                                     },
@@ -460,8 +471,110 @@ class _CalendarPageState extends State<CalendarPage> {
                         ),
                         Visibility(
                             visible: isSelected[1],
-                            child: const Column(
-                              children: [],
+                            child: Column(
+                              children: [
+                                ListView.builder(
+                                    padding: const EdgeInsets.all(8),
+                                    itemCount: _events.length,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Container(
+                                        margin: EdgeInsets.all(7.pixelSnap(ps)),
+                                        padding:
+                                            EdgeInsets.all(10.pixelSnap(ps)),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            border: Border.all(
+                                                color:
+                                                    const Color(0xFFFF7643))),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.all(
+                                                  5.pixelSnap(ps)),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 5.pixelSnap(ps),
+                                                  vertical: 2.pixelSnap(ps)),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFFFF7643),
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                              ),
+                                              child: Text(
+                                                  convertDateToRussian(
+                                                      _events[index].date),
+                                                  style: StyleLibrary
+                                                      .text.dark_orange14),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.all(
+                                                  5.pixelSnap(ps)),
+                                              child: Text(
+                                                'Игра. СПБГУТ - ${_events[index].enemy.toUpperCase()}',
+                                                style: StyleLibrary.text.gray16,
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.all(
+                                                  5.pixelSnap(ps)),
+                                              child: Text(
+                                                _events[index].sport,
+                                                style:
+                                                    StyleLibrary.text.orange14,
+                                              ),
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Container(
+                                                  margin: EdgeInsets.all(
+                                                      5.pixelSnap(ps)),
+                                                  child: Text(
+                                                    _events[index].place,
+                                                    style: StyleLibrary
+                                                        .text.gray14,
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.all(
+                                                      5.pixelSnap(ps)),
+                                                  child: Text(
+                                                    _events[index].time,
+                                                    style: StyleLibrary
+                                                        .text.black16,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {},
+                                              style: StyleLibrary
+                                                  .button.orangeButton,
+                                              child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical:
+                                                          12.pixelSnap(ps)),
+                                                  width: double.infinity,
+                                                  child: Text(
+                                                    'ЗАПИСАТЬСЯ НА ИГРУ',
+                                                    style: StyleLibrary
+                                                        .text.white14,
+                                                    textAlign: TextAlign.center,
+                                                  )),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    })
+                              ],
                             )),
                       ],
                     ),
