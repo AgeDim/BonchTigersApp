@@ -10,6 +10,7 @@ import '../widgets/role_container.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
+  static const routeName = '/registerPage';
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -63,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFE4500),
+      backgroundColor: StyleLibrary.color.orange,
       appBar: null,
       body: CustomScrollView(
         slivers: [
@@ -205,16 +206,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                               ),
                               Expanded(
-                                child: FittedBox(
-                                  child: RoleContainer(
-                                    isSelect: role == 'ОРГАНИЗАТОР',
-                                    onPressed: () {
-                                      setState(() {
-                                        role = 'ОРГАНИЗАТОР';
-                                      });
-                                    },
-                                    role: "ОРГАНИЗАТОР",
-                                  ),
+                                child: RoleContainer(
+                                  isSelect: role == 'ОРГАНИЗАТОР',
+                                  onPressed: () {
+                                    setState(() {
+                                      role = 'ОРГАНИЗАТОР';
+                                    });
+                                  },
+                                  role: "ОРГАНИЗАТОР",
                                 ),
                               ),
                             ],

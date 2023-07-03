@@ -134,7 +134,7 @@ class _EventFormPageState extends State<EventFormPage> {
   Widget build(BuildContext context) {
     final ps = PixelSnap.of(context);
     return Scaffold(
-      backgroundColor: const Color(0xFFFE4500),
+      backgroundColor: StyleLibrary.color.orange,
       body: SafeArea(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,

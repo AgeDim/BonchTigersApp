@@ -7,6 +7,7 @@ import 'package:bonch_tigers_app/styles/style_library.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+  static const routeName = '/loginPage';
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -56,19 +57,19 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFE4500),
+      backgroundColor: StyleLibrary.color.orange,
       body: SingleChildScrollView(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
               Container(
-                padding: const EdgeInsets.only(bottom: 30, left: 30),
+                padding: const EdgeInsets.only(bottom: 10, left: 20),
                 child: Stack(
                   children: [
                     const Positioned(
                       left: 0,
-                      bottom: 30,
+                      bottom: 40,
                       child: Text(
                         'Привет!',
                         textAlign: TextAlign.start,
@@ -99,33 +100,35 @@ class _LoginPageState extends State<LoginPage> {
                       alignment: Alignment.topRight,
                       child: SvgPicture.asset(
                         'assets/images/CircuitTiger.svg',
+                        width: 200,
+                        height: 200,
                       ),
                     ))
                   ],
                 ),
               ),
               Expanded(
-                  child: Container(
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(50),
-                        topLeft: Radius.circular(50)),
-                    color: Colors.white),
-                child: Form(
+                child: Container(
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(50),
+                          topLeft: Radius.circular(50)),
+                      color: Colors.white),
+                  child: Form(
                     key: formKey,
                     child: Column(
                       children: [
                         Container(
                           alignment: Alignment.centerLeft,
                           margin: const EdgeInsets.only(top: 50, left: 30),
-                          child: const Opacity(
+                          child: Opacity(
                             opacity: 0.7,
                             child: Text(
                               'Почта',
                               style: TextStyle(
                                   fontFamily: 'Source Sans Pro',
                                   fontSize: 12,
-                                  color: Color(0xFFA5A5A5)),
+                                  color: StyleLibrary.color.lightGray),
                             ),
                           ),
                         ),
@@ -137,7 +140,9 @@ class _LoginPageState extends State<LoginPage> {
                               validator: (value) {
                                 if (value == null) {
                                   return 'Пожалуйста введите почту';
-                                } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(value)) {
+                                } else if (!RegExp(
+                                        r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+                                    .hasMatch(value)) {
                                   return 'Пожалуйста введите корректную почту';
                                 }
                                 return null;
@@ -146,14 +151,14 @@ class _LoginPageState extends State<LoginPage> {
                         Container(
                           alignment: Alignment.centerLeft,
                           margin: const EdgeInsets.only(top: 35, left: 30),
-                          child: const Opacity(
+                          child: Opacity(
                             opacity: 0.7,
                             child: Text(
                               'Пароль',
                               style: TextStyle(
                                   fontFamily: 'Source Sans Pro',
                                   fontSize: 12,
-                                  color: Color(0xFFA5A5A5)),
+                                  color: StyleLibrary.color.lightGray),
                             ),
                           ),
                         ),
@@ -168,15 +173,17 @@ class _LoginPageState extends State<LoginPage> {
                                     icon: Icon(_obscureText
                                         ? Ionicons.eye_sharp
                                         : Ionicons.eye_off_sharp))),
-                            validator: (value) => value != null && value.length < 6
-                                ? 'Минимум 6 символов'
-                                : null,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            validator: (value) =>
+                                value != null && value.length < 6
+                                    ? 'Минимум 6 символов'
+                                    : null,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                           ),
                         ),
                         Container(
                           margin: const EdgeInsets.only(
-                              top: 40, left: 30, right: 30, bottom: 18),
+                              top: 40, left: 30, right: 30),
                           child: ElevatedButton(
                             style: StyleLibrary.button.orangeButton,
                             onPressed: login,
@@ -187,8 +194,8 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Align(
                                     alignment: Alignment.center,
                                     child: Container(
-                                      padding:
-                                          const EdgeInsets.symmetric(vertical: 15),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 15),
                                       child: Text('ВОЙТИ',
                                           style: StyleLibrary.text.white16),
                                     ),
@@ -211,9 +218,10 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 Navigator.pushNamed(context, '/registerPage');
                               },
-                              child: const Text(
+                              child: Text(
                                 "Нет аккаунта?",
-                                style: TextStyle(color: Color(0xFFFE4500)),
+                                style:
+                                    TextStyle(color: StyleLibrary.color.orange),
                               ),
                             ),
                           ),

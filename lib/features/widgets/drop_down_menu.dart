@@ -3,7 +3,7 @@ import 'package:ionicons/ionicons.dart';
 
 class CustomDropDownMenu extends StatefulWidget {
   const CustomDropDownMenu(
-      {Key? key, required this.arrayOfElements, required this.onDateSelected});
+      {super.key, required this.arrayOfElements, required this.onDateSelected});
 
   final List<String> arrayOfElements;
   final Function(String?) onDateSelected;

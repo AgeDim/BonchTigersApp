@@ -2,9 +2,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../model/event.dart';
-import '../../services/logger.dart';
-import '../../services/snack_bar.dart';
+import '../../../model/event.dart';
+import '../../../services/logger.dart';
+import '../../../services/snack_bar.dart';
 
 class CalendarPresenter {
   final BuildContext context;
