@@ -7,6 +7,7 @@ import 'package:ionicons/ionicons.dart';
 
 import '../../styles/style_library.dart';
 import '../widgets/role_container.dart';
+import '../main_page/main_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void navigateToMainPage() {
     Navigator.pushNamedAndRemoveUntil(
-        context, '/mainPage', (Route<dynamic> route) => false);
+        context, MainPage.routeName, (Route<dynamic> route) => false);
   }
 
   @override

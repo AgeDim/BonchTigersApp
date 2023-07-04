@@ -3,6 +3,7 @@ import 'package:pixel_snap/pixel_snap.dart';
 import 'package:intl/intl.dart';
 
 import '../../../model/event.dart';
+import '../../../services/logger.dart';
 import '../../../styles/style_library.dart';
 
 class GameListWidget extends StatelessWidget {
@@ -15,6 +16,9 @@ class GameListWidget extends StatelessWidget {
     final formattedDate = DateFormat('dd MMMM', 'ru_RU').format(parsedDate);
     final monthName = formattedDate.split(' ')[1];
     return '${formattedDate.split(' ')[0]} $monthName';
+  }
+  void registerUserOnGame(){
+
   }
 
   @override

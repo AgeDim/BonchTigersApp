@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../login/login_page.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -13,7 +15,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void logout() {
     firebaseAuth.signOut();
-    Navigator.pushNamedAndRemoveUntil(context, '/loginPage', (route) => false);
+    Navigator.pushNamedAndRemoveUntil(context, LoginPage.routeName, (route) => false);
   }
 
   @override

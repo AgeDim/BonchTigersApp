@@ -1,4 +1,6 @@
 import 'package:bonch_tigers_app/features/login/login_presenter.dart';
+import 'package:bonch_tigers_app/features/main_page/main_page.dart';
+import 'package:bonch_tigers_app/features/register/register_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void navigateToMainPage() {
     Navigator.pushNamedAndRemoveUntil(
-        context, '/mainPage', (Route<dynamic> route) => false);
+        context, MainPage.routeName, (Route<dynamic> route) => false);
   }
 
   @override
@@ -216,7 +218,8 @@ class _LoginPageState extends State<LoginPage> {
                             alignment: Alignment.centerRight,
                             child: TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/registerPage');
+                                Navigator.pushNamed(
+                                    context, RegisterPage.routeName);
                               },
                               child: Text(
                                 "Нет аккаунта?",

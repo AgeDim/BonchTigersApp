@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
       ],
       locale: const Locale('ru', 'RU'),
       debugShowCheckedModeBanner: false,
-      initialRoute: user == null ? '/loginPage' : '/mainPage',
+      initialRoute: user == null ? LoginPage.routeName : MainPage.routeName,
       routes: {
         LoginPage.routeName: (context) => const LoginPage(),
         RegisterPage.routeName: (context) => const RegisterPage(),
