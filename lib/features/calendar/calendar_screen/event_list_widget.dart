@@ -8,17 +8,19 @@ import '../../../styles/style_library.dart';
 import '../../event_from_page/event_form_page.dart';
 
 class EventListWidget extends StatelessWidget {
-  List<Event> events;
-  DateTime? selectedDay;
-  Function(int index) deleteEvent;
-  Function(Event event) addEvent;
+  final List<Event> events;
+  final DateTime? selectedDay;
+  final Function(int index) deleteEvent;
+  final Function(Event event) addEvent;
+  final Function(Event event) updateEvent;
 
-  EventListWidget(
+  const EventListWidget(
       {super.key,
       required this.events,
       required this.selectedDay,
       required this.deleteEvent,
-      required this.addEvent});
+      required this.addEvent,
+      required this.updateEvent});
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +84,21 @@ class EventListWidget extends StatelessWidget {
                                   children: [
                                     ElevatedButton(
                                       style: StyleLibrary.button.orangeButton,
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => EventFormPage(
+                                              selectedDay:
+                                                  DateFormat('dd.MM.yy')
+                                                      .format(selectedDay!),
+                                              addFunc: addEvent,
+                                              event: events[index],
+                                              updateFunc: updateEvent,
+                                            ),
+                                          ),
+                                        );
+                                      },
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -153,9 +169,10 @@ class EventListWidget extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => EventFormPage(
-                        selectedDay:
-                            DateFormat('dd.MM.yy').format(selectedDay!),
-                        addFunc: addEvent),
+                      selectedDay: DateFormat('dd.MM.yy').format(selectedDay!),
+                      addFunc: addEvent,
+                      updateFunc: updateEvent,
+                    ),
                   ),
                 );
               },

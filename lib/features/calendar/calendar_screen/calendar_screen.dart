@@ -14,6 +14,7 @@ class CalendarScreen extends StatefulWidget {
   final DateTime selectedMonth;
   final Function(int index) deleteEvent;
   final Function(DateTime month) fetchEvents;
+  final Function(Event event) updateEvent;
 
   const CalendarScreen(
       {super.key,
@@ -22,7 +23,8 @@ class CalendarScreen extends StatefulWidget {
       required this.addEvent,
       required this.selectedMonth,
       required this.deleteEvent,
-      required this.fetchEvents});
+      required this.fetchEvents,
+      required this.updateEvent});
 
   @override
   State<CalendarScreen> createState() => _CalendarScreenState();
@@ -73,10 +75,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
             ),
             EventListWidget(
-                events: widget.events,
-                selectedDay: _selectedDay,
-                deleteEvent: widget.deleteEvent,
-                addEvent: widget.addEvent)
+              events: widget.events,
+              selectedDay: _selectedDay,
+              deleteEvent: widget.deleteEvent,
+              addEvent: widget.addEvent,
+              updateEvent: widget.updateEvent,
+            )
           ],
         ),
       ),

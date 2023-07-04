@@ -1,14 +1,10 @@
 import 'package:bonch_tigers_app/features/calendar/calendar_screen/calendar_presenter.dart';
 import 'package:bonch_tigers_app/features/calendar/calendar_screen/calendar_screen.dart';
-import 'package:bonch_tigers_app/features/calendar/calendar_screen/calendar_widget.dart';
-import 'package:bonch_tigers_app/features/calendar/calendar_screen/event_list_widget.dart';
 import 'package:bonch_tigers_app/features/calendar/register_game_screen/register_game_screen.dart';
 import 'package:bonch_tigers_app/styles/style_library.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pixel_snap/pixel_snap.dart';
-import 'package:intl/intl.dart';
 
 import '../../model/event.dart';
 
@@ -49,6 +45,12 @@ class _CalendarPageState extends State<CalendarPage>
   void addEvent(Event event) {
     setState(() {
       _events.add(event);
+    });
+  }
+
+  void updateEvent(Event event) {
+    setState(() {
+      _events[_events.indexWhere((element) => element.id == event.id)] = event;
     });
   }
 
@@ -121,12 +123,14 @@ class _CalendarPageState extends State<CalendarPage>
               controller: _tabController,
               children: [
                 CalendarScreen(
-                    role: widget.role,
-                    events: _events,
-                    addEvent: addEvent,
-                    selectedMonth: _selectedMonth,
-                    deleteEvent: deleteEvent,
-                    fetchEvents: _fetchEvents),
+                  role: widget.role,
+                  events: _events,
+                  addEvent: addEvent,
+                  selectedMonth: _selectedMonth,
+                  deleteEvent: deleteEvent,
+                  fetchEvents: _fetchEvents,
+                  updateEvent: updateEvent,
+                ),
                 RegisterGameScreen(
                   events: _events,
                 )

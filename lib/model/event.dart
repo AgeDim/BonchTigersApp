@@ -5,12 +5,13 @@ class Event {
   final String time;
   final String enemy;
   final String place;
+  final  List<String?> registeredUser;
 
   Event({this.id, required this.date,
     required this.sport,
     required this.time,
     required this.enemy,
-    required this.place});
+    required this.place, required this.registeredUser});
 
 
   Map<String, dynamic> toJson() {
@@ -20,6 +21,7 @@ class Event {
       'time': time,
       'enemy': enemy,
       'place': place,
+      'registeredUser': registeredUser
     };
   }
 
@@ -31,6 +33,7 @@ class Event {
       time: json['time'],
       enemy: json['enemy'],
       place: json['place'],
+      registeredUser: json['registeredUser']
     );
   }
 }

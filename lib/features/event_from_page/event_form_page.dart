@@ -11,10 +11,16 @@ import 'package:intl/intl.dart';
 
 class EventFormPage extends StatefulWidget {
   const EventFormPage(
-      {super.key, required this.selectedDay, required this.addFunc});
+      {super.key,
+      required this.selectedDay,
+      required this.addFunc,
+      required this.updateFunc,
+      this.event});
 
+  final Event? event;
   final String selectedDay;
   final Function(Event event) addFunc;
+  final Function(Event event) updateFunc;
 
   @override
   State<EventFormPage> createState() => _EventFormPageState();
@@ -32,10 +38,13 @@ class _EventFormPageState extends State<EventFormPage> {
     super.initState();
     selectedDate = widget.selectedDay;
     selectedSport = sports.first;
+    enemyInputController.text = widget.event != null ? widget.event!.enemy : '';
+    placeInputController.text = widget.event != null ? widget.event!.place : '';
+    timeInputController.text = widget.event != null ? widget.event!.time : '';
     DatabaseReference eventRef =
         FirebaseDatabase.instance.reference().child('events');
-    _presenter = EventFormPresenter(
-        eventRef, onAdded, onUpdate, widget.addFunc, context);
+    _presenter = EventFormPresenter(eventRef, onAdded, onUpdate, widget.addFunc,
+        context, widget.updateFunc);
   }
 
   @override
@@ -119,7 +128,7 @@ class _EventFormPageState extends State<EventFormPage> {
         );
         return;
       } else {
-        _presenter.addEvent(
+        _presenter.addEvent(widget.event?.id,
             selectedDate.toString(),
             selectedSport.toString(),
             timeInputController.text.trim(),
@@ -190,6 +199,7 @@ class _EventFormPageState extends State<EventFormPage> {
                               arrayOfElements:
                                   getDaysAfterSelectedDay(widget.selectedDay),
                               onDateSelected: handleDateSelected,
+                              defaultValue: widget.selectedDay,
                             ),
                           ),
                           Text(
@@ -199,9 +209,9 @@ class _EventFormPageState extends State<EventFormPage> {
                           Container(
                             margin: EdgeInsets.only(bottom: 25.pixelSnap(ps)),
                             child: CustomDropDownMenu(
-                              arrayOfElements: sports,
-                              onDateSelected: handleSportSelected,
-                            ),
+                                arrayOfElements: sports,
+                                onDateSelected: handleSportSelected,
+                                defaultValue: widget.event?.sport),
                           ),
                           Text(
                             'Время',
