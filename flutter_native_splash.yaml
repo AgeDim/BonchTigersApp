@@ -4,7 +4,6 @@ flutter_native_splash:
     color: "#ffffff"
     image: assets/images/tiger.png
     branding: assets/images/title.png
-  # Splash screen background color.
 
   # App icon background color.
   #icon_background_color: "#111111"
