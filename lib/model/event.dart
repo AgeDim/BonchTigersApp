@@ -5,14 +5,16 @@ class Event {
   final String time;
   final String enemy;
   final String place;
-  final  List<String?> registeredUser;
+  List<String> registeredUser;
 
-  Event({this.id, required this.date,
-    required this.sport,
-    required this.time,
-    required this.enemy,
-    required this.place, required this.registeredUser});
-
+  Event(
+      {this.id,
+      required this.date,
+      required this.sport,
+      required this.time,
+      required this.enemy,
+      required this.place,
+      required this.registeredUser});
 
   Map<String, dynamic> toJson() {
     return {
@@ -26,6 +28,8 @@ class Event {
   }
 
   factory Event.fromJson(String id, Map<dynamic, dynamic> json) {
+    final registeredUser = json['registeredUser'];
+
     return Event(
       id: id,
       date: json['date'],
@@ -33,7 +37,8 @@ class Event {
       time: json['time'],
       enemy: json['enemy'],
       place: json['place'],
-      registeredUser: json['registeredUser']
+      registeredUser:
+          registeredUser != null ? List<String>.from(registeredUser) : [],
     );
   }
 }

@@ -21,7 +21,7 @@ class RoleContainer extends StatelessWidget {
         onPressed: onPressed,
         style: TextButton.styleFrom(
           backgroundColor:
-              (isSelect) ? const Color(0xFFFE4500) : const Color(0xFFFF7643),
+              (isSelect) ? StyleLibrary.color.orange : StyleLibrary.color.lightOrange,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),

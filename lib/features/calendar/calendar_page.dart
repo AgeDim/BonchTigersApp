@@ -1,4 +1,4 @@
-import 'package:bonch_tigers_app/features/calendar/calendar_screen/calendar_presenter.dart';
+import 'package:bonch_tigers_app/features/calendar/calendar_presenter.dart';
 import 'package:bonch_tigers_app/features/calendar/calendar_screen/calendar_screen.dart';
 import 'package:bonch_tigers_app/features/calendar/register_game_screen/register_game_screen.dart';
 import 'package:bonch_tigers_app/styles/style_library.dart';
@@ -58,7 +58,7 @@ class _CalendarPageState extends State<CalendarPage>
   void initState() {
     super.initState();
     DatabaseReference eventRef =
-        FirebaseDatabase.instance.reference().child('events');
+        FirebaseDatabase.instance.ref().child('events');
     _tabController = TabController(length: 2, vsync: this);
     _presenter = CalendarPresenter(eventRef, context);
     _fetchEvents(_selectedMonth);
@@ -133,6 +133,7 @@ class _CalendarPageState extends State<CalendarPage>
                 ),
                 RegisterGameScreen(
                   events: _events,
+                  updateFunc: updateEvent
                 )
               ],
             ),
