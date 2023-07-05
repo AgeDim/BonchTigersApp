@@ -18,7 +18,6 @@ class EventFormPresenter {
 
   Future<void> addEvent(String? id, String date, String sport, String time,
       String enemy, String place) async {
-    CustomLogger.info(id);
     try {
       if (id != null) {
         DatabaseEvent event = await eventsRef.child(id!).once();

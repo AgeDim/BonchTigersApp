@@ -63,7 +63,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     selDay: _selectedDay,
                     selectedMonth: widget.selectedMonth,
                     fetchEvents: widget.fetchEvents,
-                    setSelectedDay: setSelectedDay)
+                    setSelectedDay: setSelectedDay,events: widget.events)
               ],
             ),
             Container(

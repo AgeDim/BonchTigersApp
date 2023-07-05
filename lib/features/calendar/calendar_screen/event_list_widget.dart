@@ -47,11 +47,14 @@ class EventListWidget extends StatelessWidget {
                         Text(
                           'Игра. СПБГУТ - ${events[index].enemy.toUpperCase()}',
                           style: StyleLibrary.text.gray16,
+                          textAlign: TextAlign.left,
                         ),
-                        Text(
+                        Flexible(
+                            child: Text(
                           events[index].sport,
                           style: StyleLibrary.text.orange14,
-                        )
+                          textAlign: TextAlign.right,
+                        ))
                       ],
                     ),
                     Container(
