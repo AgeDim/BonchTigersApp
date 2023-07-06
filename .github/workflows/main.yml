@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,24 +12,19 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-
       - name: Get Release Version
         id: release_version
         run: |
           echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '3.10.5'
-
       - run: flutter pub get
       - run: flutter build apk
-
       - uses: actions/upload-artifact@v2
         with:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
