@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    DatabaseReference userRef = FirebaseDatabase.instance.reference();
+    DatabaseReference userRef = FirebaseDatabase.instance.ref();
     _presenter = MainPresenter(firebaseAuth, userRef);
     getCurrentUserRole();
   }
@@ -95,7 +95,7 @@ class _MainPageState extends State<MainPage> {
           role: role,
         ),
         const StatsPage(),
-        const ProfilePage()
+        ProfilePage(role:role)
       ][currentPageIndex],
     );
   }

@@ -69,10 +69,14 @@ class EventListWidget extends StatelessWidget {
                                     DateFormat('dd.MM.yy HH:mm').parse(
                                         '${events[index].date} ${events[index].time}')),
                                 style: StyleLibrary.text.gray14,
+                                textAlign: TextAlign.left,
                               ),
-                              Text(
-                                events[index].place,
-                                style: StyleLibrary.text.gray14,
+                              Flexible(
+                                child: Text(
+                                  events[index].place,
+                                  style: StyleLibrary.text.gray14,
+                                  textAlign: TextAlign.right,
+                                ),
                               ),
                             ],
                           ),

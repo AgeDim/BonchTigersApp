@@ -34,10 +34,13 @@ dependencies:
   firebase_core: ^2.14.0
   firebase_auth: ^4.6.3
   firebase_database: ^10.2.3
+  firebase_storage: ^11.2.4
 
   pixel_snap: ^0.1.1
 
   table_calendar: ^3.0.9
+
+  image_picker: ^1.0.0
 
   logger: ^1.4.0
   flutter:

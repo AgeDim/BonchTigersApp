@@ -67,6 +67,7 @@ class _GameListWidgetState extends State<GameListWidget> {
   Widget build(BuildContext context) {
     final ps = PixelSnap.of(context);
     return ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.all(8),
         itemCount: widget.events.length,
         shrinkWrap: true,
