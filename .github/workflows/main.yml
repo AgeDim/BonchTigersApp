@@ -14,9 +14,13 @@ jobs:
         with:
           java-version: '12.x'
 
+      - name: Get Release Version
+        id: release_version
+        run: echo ::set-output name=version::${GITHUB_REF#refs/tags/}
+
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '2.8.1'
+          flutter-version: '3.10.5'
 
       - run: flutter pub get
       - run: flutter build apk
@@ -25,3 +29,14 @@ jobs:
         with:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ steps.release_version.outputs.version }}
+          body: |
+            This is the release of version ${{ steps.release_version.outputs.version }}
