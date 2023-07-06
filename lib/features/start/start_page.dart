@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../styles/style_library.dart';
+
 class StartPage extends StatefulWidget {
   final String nextRoute;
-
+  static const routeName = '/startPage';
   StartPage({super.key, this.nextRoute = '/loginPage'});
 
   @override
@@ -31,20 +33,20 @@ class _StartPageState extends State<StartPage> {
           children: [
             Container(
               margin: const EdgeInsets.only(top: 140),
-              child: const Text('BONCH',
+              child: Text('BONCH',
                   style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 61.65,
-                    color: Color(0xFFFE4500),
+                    color: StyleLibrary.color.orange,
                     height: 0.75,
                   )),
             ),
-            const Text(
+            Text(
               'TIGERS',
               style: TextStyle(
                 fontFamily: 'Montserrat',
                 fontSize: 61.65,
-                color: Color(0xFFFE4500),
+                color: StyleLibrary.color.orange,
                 height: 0.75,
               ),
             ),

@@ -11,36 +11,44 @@ import 'package:intl/intl.dart';
 
 class EventFormPage extends StatefulWidget {
   const EventFormPage(
-      {super.key, required this.selectedDay, required this.addFunc});
+      {super.key,
+      required this.selectedDay,
+      required this.addFunc,
+      required this.updateFunc,
+      this.event});
 
+  final Event? event;
   final String selectedDay;
   final Function(Event event) addFunc;
+  final Function(Event event) updateFunc;
 
   @override
   State<EventFormPage> createState() => _EventFormPageState();
 }
 
 class _EventFormPageState extends State<EventFormPage> {
-  TextEditingController timeInputController = TextEditingController();
   TextEditingController enemyInputController = TextEditingController();
   TextEditingController placeInputController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   late EventFormPresenter _presenter;
+  String? _selectedTime;
 
   @override
   void initState() {
     super.initState();
     selectedDate = widget.selectedDay;
     selectedSport = sports.first;
+    enemyInputController.text = widget.event != null ? widget.event!.enemy : '';
+    placeInputController.text = widget.event != null ? widget.event!.place : '';
+    _selectedTime = widget.event != null ? widget.event!.time : '';
     DatabaseReference eventRef =
-        FirebaseDatabase.instance.reference().child('events');
-    _presenter = EventFormPresenter(
-        eventRef, onAdded, onUpdate, widget.addFunc, context);
+        FirebaseDatabase.instance.ref().child('events');
+    _presenter = EventFormPresenter(eventRef, onAdded, onUpdate, widget.addFunc,
+        context, widget.updateFunc);
   }
 
   @override
   void dispose() {
-    timeInputController.dispose();
     enemyInputController.dispose();
     placeInputController.dispose();
 
@@ -86,7 +94,7 @@ class _EventFormPageState extends State<EventFormPage> {
   void onAdded() {
     SnackBarService.showSnackBar(
       context,
-      'Event added successfully!',
+      'Event saved successfully!',
       true,
     );
   }
@@ -105,11 +113,21 @@ class _EventFormPageState extends State<EventFormPage> {
     });
   }
 
+  Future<void> _show() async {
+    final TimeOfDay? result =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    if (result != null) {
+      setState(() {
+        _selectedTime = result.format(context);
+      });
+    }
+  }
+
   Future<void> submit() async {
     if (formKey.currentState!.validate()) {
       if (selectedDate == null ||
           selectedSport == null ||
-          timeInputController.text.isEmpty ||
+          _selectedTime!.isEmpty ||
           enemyInputController.text.isEmpty ||
           placeInputController.text.isEmpty) {
         SnackBarService.showSnackBar(
@@ -120,12 +138,14 @@ class _EventFormPageState extends State<EventFormPage> {
         return;
       } else {
         _presenter.addEvent(
+            widget.event?.id,
             selectedDate.toString(),
             selectedSport.toString(),
-            timeInputController.text.trim(),
+            _selectedTime!,
             enemyInputController.text.trim(),
             placeInputController.text.trim());
         Navigator.pop(context);
+        onAdded();
       }
     }
   }
@@ -134,7 +154,7 @@ class _EventFormPageState extends State<EventFormPage> {
   Widget build(BuildContext context) {
     final ps = PixelSnap.of(context);
     return Scaffold(
-      backgroundColor: const Color(0xFFFE4500),
+      backgroundColor: StyleLibrary.color.orange,
       body: SafeArea(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
@@ -190,6 +210,7 @@ class _EventFormPageState extends State<EventFormPage> {
                               arrayOfElements:
                                   getDaysAfterSelectedDay(widget.selectedDay),
                               onDateSelected: handleDateSelected,
+                              defaultValue: widget.selectedDay,
                             ),
                           ),
                           Text(
@@ -199,31 +220,49 @@ class _EventFormPageState extends State<EventFormPage> {
                           Container(
                             margin: EdgeInsets.only(bottom: 25.pixelSnap(ps)),
                             child: CustomDropDownMenu(
-                              arrayOfElements: sports,
-                              onDateSelected: handleSportSelected,
-                            ),
+                                arrayOfElements: sports,
+                                onDateSelected: handleSportSelected,
+                                defaultValue: widget.event?.sport),
                           ),
                           Text(
                             'Время',
                             style: StyleLibrary.text.darkWhite12,
                           ),
                           Container(
-                            margin: EdgeInsets.only(bottom: 25.pixelSnap(ps)),
-                            child: TextFormField(
-                              controller: timeInputController,
-                              keyboardType: TextInputType.datetime,
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'Пожалуйста введите время';
-                                } else if (!RegExp(
-                                        r'^([01]\d|2[0-3]):([0-5]\d)$')
-                                    .hasMatch(value)) {
-                                  return 'Пожалуйста введите корректное время';
-                                }
-                                return null;
-                              },
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                            margin: EdgeInsets.only(
+                                bottom: 25.pixelSnap(ps),
+                                top: 10.pixelSnap(ps)),
+                            child: ElevatedButton(
+                              onPressed: _show,
+                              style: StyleLibrary.button.orangeButton,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 15),
+                                        child: Text(
+                                          'ВЫБРАТЬ ВРЕМЯ',
+                                          style: StyleLibrary.text.white16,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              _selectedTime != null
+                                  ? _selectedTime!
+                                  : 'ВЫБЕРИТЕ ВРЕМЯ',
+                              style: StyleLibrary.text.black20,
                             ),
                           ),
                           Text(

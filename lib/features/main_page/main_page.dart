@@ -7,8 +7,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../styles/style_library.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
+  static const routeName = '/mainPage';
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -45,8 +48,8 @@ class _MainPageState extends State<MainPage> {
               topRight: Radius.circular(20), topLeft: Radius.circular(20)),
         ),
         child: BottomNavigationBar(
-          backgroundColor: const Color(0xFFFE4500),
-          selectedItemColor: const Color(0xFFFE4500),
+          backgroundColor: StyleLibrary.color.orange,
+          selectedItemColor: StyleLibrary.color.orange,
           onTap: (index) {
             setState(() {
               currentPageIndex = index;
