@@ -1,7 +1,9 @@
+import 'package:bonch_tigers_app/styles/style_library.dart';
 import 'package:flutter/material.dart';
 
 class RoleContainer extends StatelessWidget {
-  const RoleContainer({Key? key,
+  const RoleContainer({
+    Key? key,
     required this.isSelect,
     required this.onPressed,
     required this.role,
@@ -14,24 +16,17 @@ class RoleContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin:
-      const EdgeInsets.symmetric(horizontal: 30),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          backgroundColor: (isSelect)
-              ? const Color(0xFFFE4500)
-              : const Color(0xFFFF7643),
+          backgroundColor:
+              (isSelect) ? StyleLibrary.color.orange : StyleLibrary.color.lightOrange,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        child:  Text(
-          role,
-          style: const TextStyle(
-            color: Colors.white,
-          ),
-        ),
+        child: Text(role, style: StyleLibrary.text.white16),
       ),
     );
   }

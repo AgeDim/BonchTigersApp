@@ -13,7 +13,7 @@ class CalendarPresenter {
   CalendarPresenter(this.eventsRef, this.context);
 
   Future<List<Event>> getEventsForMonth(int currentMonth) async {
-    final eventsRef = FirebaseDatabase.instance.reference().child('events');
+    final eventsRef = FirebaseDatabase.instance.ref().child('events');
     final firstDay = DateTime(DateTime.now().year, currentMonth, 1);
     final lastDay = DateTime(DateTime.now().year, currentMonth + 1, 0);
     final formattedFirstDay = DateFormat('dd.MM.yy').format(firstDay);
@@ -42,7 +42,7 @@ class CalendarPresenter {
 
   Future<bool> deleteEvent(String? eventId) async {
     try {
-      DatabaseReference eventRef = FirebaseDatabase.instance.reference().child('events');
+      DatabaseReference eventRef = FirebaseDatabase.instance.ref().child('events');
       await eventRef.child(eventId!).remove();
       SnackBarService.showSnackBar(
         context,
