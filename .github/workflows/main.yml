@@ -1,10 +1,5 @@
-name: Flutter Action
-
-on:
-  push:
-    branches:
-      - master
-
+name: Release Action
+on: push
 jobs:
   build:
     runs-on: ubuntu-latest
