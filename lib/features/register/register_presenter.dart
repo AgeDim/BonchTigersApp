@@ -13,12 +13,13 @@ class RegisterPresenter {
   RegisterPresenter(
       this._firebaseAuth, this.userRef, this.onRegisterSuccess, this.context);
 
-  Future<void> register(String email, String password, String role) async {
+  Future<void> register(String email, String name, String password, String role) async {
     try {
       UserCredential credential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       User? user = credential.user;
       if (user != null) {
+        await user.updateDisplayName(name);
         userRef.child(user.uid).child('role').set(role);
         onRegisterSuccess();
       }

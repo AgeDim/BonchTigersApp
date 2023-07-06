@@ -26,6 +26,11 @@ class FontStyle {
     fontSize: 20,
     color: Color(0xFF777777),
   );
+  TextStyle lightGray16 = const TextStyle(
+    fontFamily: 'Source Sans Pro',
+    fontSize: 16,
+    color: Color(0xFF777777),
+  );
   TextStyle darkWhite12 = const TextStyle(
       fontFamily: 'Source Sans Pro', fontSize: 12, color: Color(0xFFA5A5A5));
   TextStyle white16 = const TextStyle(

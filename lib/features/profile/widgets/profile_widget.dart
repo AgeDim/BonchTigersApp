@@ -55,71 +55,72 @@ class _ProfileWidgetState extends State<ProfileWidget> {
         border: Border.all(color: StyleLibrary.color.orange),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            children: [
-              Container(
-                width: 100,
-                height: 100,
-                margin: EdgeInsets.all(10.pixelSnap(ps)),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.pixelSnap(ps)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.7),
-                      spreadRadius: 2,
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
+          Container(
+            width: 100,
+            height: 100,
+            margin: EdgeInsets.all(10.pixelSnap(ps)),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.pixelSnap(ps)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.7),
+                  spreadRadius: 2,
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.pixelSnap(ps)),
+              child: _imageUrl != null
+                  ? Image.network(
+                      _imageUrl!,
+                      fit: BoxFit.cover,
+                      height: 100,
+                      width: 100,
+                    )
+                  : Icon(
+                      Icons.account_box_outlined,
+                      size: 100.pixelSnap(ps),
+                      color: Colors.grey,
+                    ),
+            ),
+          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 15.pixelSnap(ps)),
+                      child: Text(
+                        '${FirebaseAuth.instance.currentUser!.displayName}',
+                        style: StyleLibrary.text.black20,
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    Text(
+                      '${widget.role}',
+                      style: StyleLibrary.text.lightGray16,
                     ),
                   ],
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10.pixelSnap(ps)),
-                  child: _imageUrl != null
-                      ? Image.network(
-                          _imageUrl!,
-                          fit: BoxFit.cover,
-                          height: 100,
-                          width: 100,
-                        )
-                      : Icon(
-                          Icons.account_box_outlined,
-                          size: 100.pixelSnap(ps),
-                          color: Colors.grey,
-                        ),
-                ),
-              ),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                '${FirebaseAuth.instance.currentUser!.email}',
-                style: StyleLibrary.text.black16,
-                textAlign: TextAlign.start,
-              ),
-              Text(
-                '${widget.role}',
-                style: StyleLibrary.text.black16,
-              ),
-            ],
-          ),
-          Container(
-            alignment: Alignment.topRight,
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () => {_presenter.pickImage()},
-                  child: SizedBox(
-                    width: 30.pixelSnap(ps),
-                    height: 30.pixelSnap(ps),
-                    child: Icon(
-                      Icons.camera_alt_outlined,
-                      size: 30.pixelSnap(ps),
-                      color: Colors.grey,
+                Container(
+                  alignment: Alignment.topRight,
+                  child: GestureDetector(
+                    onTap: () => {_presenter.pickImage()},
+                    child: SizedBox(
+                      width: 30.pixelSnap(ps),
+                      height: 30.pixelSnap(ps),
+                      child: Icon(
+                        Icons.camera_alt_outlined,
+                        size: 30.pixelSnap(ps),
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ),

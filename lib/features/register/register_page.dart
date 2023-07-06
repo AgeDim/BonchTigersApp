@@ -24,6 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
   late RegisterPresenter _presenter;
   TextEditingController emailTextInputController = TextEditingController();
   TextEditingController passwordTextInputController = TextEditingController();
+  TextEditingController nameTextInputController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   void navigateToMainPage() {
@@ -36,7 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
     super.initState();
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     DatabaseReference userRef =
-        FirebaseDatabase.instance.reference().child('users');
+        FirebaseDatabase.instance.ref().child('users');
     _presenter =
         RegisterPresenter(firebaseAuth, userRef, navigateToMainPage, context);
   }
@@ -45,6 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void dispose() {
     emailTextInputController.dispose();
     passwordTextInputController.dispose();
+    nameTextInputController.dispose();
 
     super.dispose();
   }
@@ -58,7 +60,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> register() async {
     final isValid = formKey.currentState!.validate();
     if (!isValid) return;
-    _presenter.register(emailTextInputController.text.trim(),
+    _presenter.register(emailTextInputController.text.trim(),nameTextInputController.text.trim(),
         passwordTextInputController.text.trim(), role);
   }
 
@@ -96,7 +98,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       Container(
                         alignment: Alignment.centerLeft,
                         margin:
-                            const EdgeInsets.only(left: 30, top: 33, bottom: 4),
+                            const EdgeInsets.only(left: 30, top: 23, bottom: 4),
                         child: Text('Привет!', style: StyleLibrary.text.gray34),
                       ),
                       Container(
@@ -107,7 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
-                        margin: const EdgeInsets.only(top: 41, left: 30),
+                        margin: const EdgeInsets.only(top: 21, left: 30),
                         child: Opacity(
                           opacity: 0.7,
                           child: Text('Почта',
@@ -126,6 +128,30 @@ class _RegisterPageState extends State<RegisterPage> {
                                       r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
                                   .hasMatch(value)) {
                                 return 'Пожалуйста введите корректную почту';
+                              }
+                              return null; // Return null if the email is valid
+                            },
+                          )),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: const EdgeInsets.only(top: 41, left: 30),
+                        child: Opacity(
+                          opacity: 0.7,
+                          child: Text('Имя',
+                              style: StyleLibrary.text.darkWhite12),
+                        ),
+                      ),
+                      Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: TextFormField(
+                            keyboardType: TextInputType.name,
+                            controller: nameTextInputController,
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Пожалуйста введите имя';
+                              } else if (!RegExp(r'^[А-ЯЁа-яё\s]+$')
+                                  .hasMatch(value)) {
+                                return 'Пожалуйста введите имя на кириллице';
                               }
                               return null; // Return null if the email is valid
                             },
@@ -223,7 +249,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       Container(
                         margin: const EdgeInsets.only(
-                            top: 40, left: 30, right: 30, bottom: 18),
+                            top: 30, left: 30, right: 30, bottom: 18),
                         child: ElevatedButton(
                           style: StyleLibrary.button.orangeButton,
                           onPressed: register,
