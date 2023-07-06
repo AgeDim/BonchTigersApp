@@ -16,7 +16,8 @@ jobs:
 
       - name: Get Release Version
         id: release_version
-        run: echo ::set-output name=version::${GITHUB_REF#refs/tags/}
+        run: |
+          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
       - uses: subosito/flutter-action@v1
         with:
@@ -37,6 +38,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ steps.release_version.outputs.version }}
+          release_name: Release ${{ env.VERSION }}
           body: |
-            This is the release of version ${{ steps.release_version.outputs.version }}
+            This is the release of version ${{ env.VERSION }}
