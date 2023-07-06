@@ -1,6 +1,10 @@
 name: Flutter Action
 
-on: push
+on:
+  push:
+    branches:
+      - master
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,3 +36,12 @@ jobs:
           release_name: Release ${{ env.VERSION }}
           body: |
             This is the release of version ${{ env.VERSION }}
+      - name: Upload APK to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/app/outputs/flutter-apk/app-release.apk
+          asset_name: app-release.apk
+          asset_content_type: application/vnd.android.package-archive
