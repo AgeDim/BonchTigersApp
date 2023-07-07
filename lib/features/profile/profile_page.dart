@@ -1,3 +1,4 @@
+import 'package:bonch_tigers_app/features/profile/widgets/profile_form.dart';
 import 'package:bonch_tigers_app/features/profile/widgets/profile_widget.dart';
 import 'package:bonch_tigers_app/styles/style_library.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,26 +34,32 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SafeArea(
         child: Container(
           alignment: Alignment.center,
-          child: Column(
-            children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(
-                    left: 20.pixelSnap(ps), top: 8.pixelSnap(ps)),
-                child: Text(
-                  "Профиль",
-                  style: StyleLibrary.text.white20,
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                height: 200,
-                width: 200,
-                margin: EdgeInsets.only(top: 10.pixelSnap(ps)),
-                child: SvgPicture.asset('assets/images/WhiteTigerFull.svg'),
-              ),
-              Expanded(
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                  child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.only(
+                        left: 20.pixelSnap(ps), top: 8.pixelSnap(ps)),
+                    child: Text(
+                      "Профиль",
+                      style: StyleLibrary.text.white20,
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    height: 200,
+                    width: 200,
+                    margin: EdgeInsets.only(top: 10.pixelSnap(ps)),
+                    child: SvgPicture.asset('assets/images/WhiteTigerFull.svg'),
+                  ),
+                ],
+              )),
+              SliverFillRemaining(
+                hasScrollBody: false,
                 child: Container(
                   padding: EdgeInsets.all(20.pixelSnap(ps)),
                   decoration: const BoxDecoration(
@@ -61,9 +68,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           topLeft: Radius.circular(25),
                           topRight: Radius.circular(25))),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       ProfileWidget(role: widget.role),
+                      Container(
+                          margin: EdgeInsets.all(5.pixelSnap(ps)),
+                          child: ProfileForm(role: widget.role)),
                       ElevatedButton(
                         onPressed: logout,
                         style: StyleLibrary.button.orangeButton,
@@ -75,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
